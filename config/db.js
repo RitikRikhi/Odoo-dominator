@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 const connectDB = async () => {
-  await mongoose.connect(process.env.MONGO_URI);
+  await mongoose.connect("mongodb://localhost:27017/eventHive");
   console.log('MongoDB connected');
 };
 module.exports = connectDB;

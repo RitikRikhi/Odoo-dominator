@@ -30,8 +30,10 @@ const AddNewEvent = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        const information={}
         console.log('Form submitted:', formData);
-        // TODO: Add API call to submit the form data
+        
     };
 
     return (
@@ -42,7 +44,7 @@ const AddNewEvent = () => {
                 className="p-4 border rounded shadow-sm bg-light" 
                 style={{ maxWidth: '700px', margin: '0 auto' }}
             >
-                {/* Event Details */}
+           
                 <div className="mb-3">
                     <label htmlFor="eventName" className="form-label">Event Name</label>
                     <input 
