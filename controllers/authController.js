@@ -21,7 +21,20 @@ exports.register = async (req, res) => {
       password: hashed,
       role: 'attendee'
     });
-    res.json(user);
+
+    // Generate JWT token
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET);
+    
+    // Return user data with token
+    res.json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      },
+      token
+    });
   } catch (error) {
     console.error('Registration error:', error);
     res.status(500).json({ error: 'Internal server error' });
