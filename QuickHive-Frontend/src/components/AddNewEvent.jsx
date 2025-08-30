@@ -44,7 +44,11 @@ const AddNewEvent = () => {
                 className="p-4 border rounded shadow-sm bg-light" 
                 style={{ maxWidth: '700px', margin: '0 auto' }}
             >
+<<<<<<< HEAD
            
+=======
+              
+>>>>>>> 82909f4 (Some Component)
                 <div className="mb-3">
                     <label htmlFor="eventName" className="form-label">Event Name</label>
                     <input 
@@ -197,6 +201,7 @@ const AddNewEvent = () => {
                             name="salesEnd"
                             value={formData.salesEnd}
                             onChange={handleChange}
+                            min={formData.salesStart}
                             required
                         />
                     </div>
