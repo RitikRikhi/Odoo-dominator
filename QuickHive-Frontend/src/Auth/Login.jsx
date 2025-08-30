@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Signup = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const handleChange = (e) => {
@@ -17,35 +15,17 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-
-    console.log("Signup Data:", formData);
-    alert("Signup successful!");
-    // TODO: Add API call for signup
+    console.log("Login Data:", formData);
+    alert("Login successful!");
+    // TODO: Add API call for login authentication
   };
 
   return (
     <div className="container mt-5" style={{ maxWidth: "500px" }}>
       <div className="card shadow p-4 rounded-3">
-        <h2 className="text-center mb-4">Sign Up</h2>
+        <h2 className="text-center mb-4">Login</h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="name" className="form-label">Full Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Enter your name"
-              required
-            />
-          </div>
-
+          
           <div className="mb-3">
             <label htmlFor="email" className="form-label">Email Address</label>
             <input
@@ -74,30 +54,17 @@ const Signup = () => {
             />
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
-            <input
-              type="password"
-              className="form-control"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="Re-enter password"
-              required
-            />
-          </div>
-
           <button type="submit" className="btn btn-primary w-100">
-            Sign Up
+            Login
           </button>
         </form>
+
         <p className="text-center mt-3">
-          Already have an account? <a href="/login">Login</a>
+          Don’t have an account? <a href="/signup">Sign Up</a>
         </p>
       </div>
     </div>
   );
 };
 
-export default Signup;
+export default Login;
