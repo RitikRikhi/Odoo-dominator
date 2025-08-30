@@ -30,10 +30,12 @@ const AddNewEvent = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        const information={}
         console.log('Form submitted:', formData);
         
+        // TODO: Add API call to create event
+        // axios.post('/api/events/create', formData, {
+        //   headers: { Authorization: `Bearer ${token}` }
+        // })
     };
 
     return (

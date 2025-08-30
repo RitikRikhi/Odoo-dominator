@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import axios from "axios";
+import {useNavigate,Link} from 'react-router-dom';
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -12,14 +13,26 @@ const Login = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-
-    console.log("Login Data:", formData);
+ try{
+  const res=await axios.post('http://localhost:5000/api/auth/login',{
+    email:formData.email,
+    password:formData.password
+  })
+console.log("Login Data:", formData);
     alert("Login successful!");
+  
+
+ }
+catch(err){
+   console.error("Signup error:", err.response?.data || err.message);
+      alert(err.response?.data?.error || "Signup failed!");
+}
+    
     // TODO: Add API call for login authentication
   };
-
+const navigate=useNavigate();
   return (
     <div className="container mt-5" style={{ maxWidth: "500px" }}>
       <div className="card shadow p-4 rounded-3">
@@ -60,7 +73,7 @@ const Login = () => {
         </form>
 
         <p className="text-center mt-3">
-          Don’t have an account? <a href="/signup">Sign Up</a>
+          Don’t have an account?<Link to={'/register'}>Sign up</Link>
         </p>
       </div>
     </div>
