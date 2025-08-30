@@ -1,4 +1,4 @@
-import AddNewEvent from './components/AddNewEvent'
+
 import './index.css'
 import Login from './Auth/Login'
 import SignUp from './Auth/Signup'

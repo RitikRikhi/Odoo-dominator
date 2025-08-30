@@ -1,0 +1,42 @@
+/* App.css - Custom styles for EventHive */
+
+/* Ensure the body takes full height */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom styles for the carousel */
+.embla {
+  position: relative;
+}
+
+.embla__container {
+  display: flex;
+}
+
+.embla__slide {
+  position: relative;
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+/* Custom accent color for buttons */
+.bg-accentColor {
+  background-color: #3b82f6; /* blue-500 */
+}
+
+.bg-accentColor:hover {
+  background-color: #2563eb; /* blue-600 */
+}
+
+/* Ensure proper z-index for navbar */
+.z-50 {
+  z-index: 50;
+}
+
+/* Additional utility classes */
+.min-h-screen {
+  min-height: 100vh;
+}

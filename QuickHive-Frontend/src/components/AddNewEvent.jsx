@@ -199,6 +199,7 @@ const AddNewEvent = () => {
                             name="salesEnd"
                             value={formData.salesEnd}
                             onChange={handleChange}
+                            min={formData.salesStart}
                             required
                         />
                     </div>
