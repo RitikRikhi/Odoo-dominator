@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optional: Add smooth scrolling for all elements */
+* {
+  scroll-behavior: smooth;
+}

@@ -2,6 +2,8 @@
 import React, { useState } from 'react'
 import './AddNewEvent.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AddNewEvent = () => {
     const [formData, setFormData] = useState({
@@ -19,6 +21,10 @@ const AddNewEvent = () => {
         maxTicketsPerUser: '',
         totalTickets: ''
     });
+    const [isLoading,setIsLoading]=useState(false);
+    const [successMessage,setSuccessMessage]=useState('');
+    const [errorMessage,setErrorMessage]=useState('');
+    const navigate=useNavigate();
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -28,10 +34,90 @@ const AddNewEvent = () => {
         }));
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         event.preventDefault();
-        console.log('Form submitted:', formData);
+        setIsLoading(true);
+        setErrorMessage('');
+        setSuccessMessage('')
+
+        try{
+            const token = localStorage.getItem('userToken')
+            if(!token){
+                setErrorMessage('Please login to create events');
+                setIsLoading(false);
+                return;
+            }
+
+            const totalTickets = parseInt(formData.totalTickets) || 0;
+            const tickets = formData.ticketCategory === 'Paid' ? [
+                {
+                    type: 'Standard',
+                    price: parseFloat(formData.standardPrice) || 0,
+                    quantity: Math.floor(totalTickets / 2),
+                    saleStart: formData.salesStart,
+                    saleEnd: formData.salesEnd
+                },
+                {
+                    type: 'VIP',
+                    price: parseFloat(formData.vipPrice) || 0,
+                    quantity: Math.ceil(totalTickets / 2),
+                    saleStart: formData.salesStart,
+                    saleEnd: formData.salesEnd
+                }
+            ] : [
+                {
+                    type: 'Free',
+                    price: 0,
+                    quantity: totalTickets,
+                    saleStart: formData.salesStart,
+                    saleEnd: formData.salesEnd
+                }
+            ];
+
+            const eventData = {
+                title: formData.eventName,
+                eventDate: formData.eventDate,
+                eventTime: formData.eventTime,
+                eventLocation: formData.eventLocation,
+                description: formData.eventDescription,
+                ticketType: formData.ticketCategory,
+                paidTicketCategory: formData.ticketCategory === 'Paid' ? 'Standard' : undefined,
+                category: 'General', // Add category field if needed
+                tickets: tickets
+            };
+
+            console.log("Form submitted: ",eventData);
+            const res=await axios.post('http://localhost:5000/api/events/create',eventData,{
+                headers:{
+                    Authorization:`Bearer ${token}`,
+                     'Content-Type': 'application/json'
+                }
+            })
+            console.log('Event created  Successfully',res.data)
+            setSuccessMessage('Event created successfully!');
+            navigate('/events')
+            // Optionally navigate to events page
+            // navigate('/events');
+        }
+        catch(error){
+              console.error('Error creating event:', error);
+            
+            if (error.response) {
+                // Server responded with error status
+                setErrorMessage(error.response.data.message || 'Failed to create event. Please try again.');
+            } else if (error.request) {
+                // Request was made but no response received
+                setErrorMessage('Network error. Please check your connection and try again.');
+            } else {
+                // Something else happened
+                setErrorMessage('An unexpected error occurred. Please try again.');
+            }
+        } finally {
+            setIsLoading(false);
         
+            
+        }
+ 
         // TODO: Add API call to create event
         // axios.post('/api/events/create', formData, {
         //   headers: { Authorization: `Bearer ${token}` }
@@ -41,6 +127,29 @@ const AddNewEvent = () => {
     return (
         <div className="container mt-4 formContainer">
             <h1 className="mb-4 text-center">Add New Event</h1>
+                 {successMessage && (
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Success!</strong> {successMessage}
+                    <button 
+                        type="button" 
+                        className="btn-close" 
+                        onClick={() => setSuccessMessage('')}
+                    ></button>
+                </div>
+            )}
+            
+            {/* Error Message */}
+            {errorMessage && (
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> {errorMessage}
+                    <button 
+                        type="button" 
+                        className="btn-close" 
+                        onClick={() => setErrorMessage('')}
+                    ></button>
+                </div>
+            )}
+
             <form 
                 onSubmit={handleSubmit}
                 className="p-4 border rounded shadow-sm bg-light" 
@@ -234,8 +343,8 @@ const AddNewEvent = () => {
                     </div>
                 </div>
 
-                <button type="submit" className="btn btn-success w-100">
-                    Add Event
+                <button type="submit" className="btn btn-success w-100" disabled={isLoading}>
+                    {isLoading ? 'Creating Event...' : 'Add Event'}
                 </button>
             </form>
         </div>
